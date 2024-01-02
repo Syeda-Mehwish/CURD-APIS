@@ -57,7 +57,7 @@ exports.getUsers = async (req, res) => {
 
   try {
     // skip
-    const skip = (page - 1) * ITEM_PER_PAGE; // 2-1 =1 1*4 = 4
+    const skip = (page - 1) * ITEM_PER_PAGE;
 
     // count Document
     const count = await users.countDocuments(query);
@@ -66,9 +66,11 @@ exports.getUsers = async (req, res) => {
       .find(query)
       .sort({ datecreated: sort == "new" ? -1 : 1 })
       .limit(ITEM_PER_PAGE)
-      .skip(skip); // 0
+      .skip(skip);
 
-    const pageCount = Math.ceil(count / ITEM_PER_PAGE); //8/4 = 2
+    // api example: http://localhost:3000/users/?search=m&status=All&gender=female&sort=&page=1&iteams=2
+
+    const pageCount = Math.ceil(count / ITEM_PER_PAGE);
 
     res.status(200).json({
       pagination: {

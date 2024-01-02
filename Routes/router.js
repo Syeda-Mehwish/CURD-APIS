@@ -2,13 +2,14 @@ const express = require("express");
 const router = new express.Router();
 const UserControllers = require("../Controllers/userControllers");
 const productControllers = require("../Controllers/productsControllers");
+const commentControllers = require("../Controllers/commentsControllers");
 
 //User
-router.post("/user/register", UserControllers.userpost);
-router.get("/user/getAlluser", UserControllers.getUsers);
-router.get("/user/singleuser/:id", UserControllers.getSingleuser);
-router.delete("/user/deleteuser/:id", UserControllers.deleteuser);
-router.put("/user/updateuser/:id", UserControllers.updateUser);
+router.post("/users", UserControllers.userpost);
+router.get("/users", UserControllers.getUsers);
+router.get("/users/:id", UserControllers.getSingleuser);
+router.delete("/users/id", UserControllers.deleteuser);
+router.put("/users/:id", UserControllers.updateUser);
 
 //Products
 
@@ -22,5 +23,8 @@ router.post("/products", productControllers.productpost);
 router.put("/products/:id", productControllers.updateProduct);
 // delete a product
 router.delete("/products/:id", productControllers.deleteProduct);
+
+//user comments
+router.post("/user/comments", commentControllers.commentpost);
 
 module.exports = router;

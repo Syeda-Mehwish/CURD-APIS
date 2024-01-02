@@ -53,7 +53,15 @@ exports.deleteProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.findByIdAndUpdate(id, req.body);
+    const { name, quantity, price, image, timestamps } = req.body;
+
+    const product = await Product.findByIdAndUpdate(
+      { _id: id },
+      { name, quantity, price, image, timestamps },
+      {
+        new: true,
+      }
+    );
     // we cannot find any product in database
     if (!product) {
       return res
