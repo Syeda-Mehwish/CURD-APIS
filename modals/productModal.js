@@ -3,6 +3,11 @@ const validator = require("validator");
 
 const productSchema = mongoose.Schema(
   {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     name: {
       type: String,
       required: [true, "Please enter a product name"],

@@ -1,5 +1,66 @@
 const users = require("../modals/userSchema");
 const moment = require("moment");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+exports.registerUser = async (req, res) => {
+  const { firstname, email, password, mobile, gender, status } = req.body;
+  if (!firstname || !email || !password || !mobile || !gender || !status) {
+    res.status(400).json({ error: "All fields are mandatory!" });
+  }
+  const userAvailable = await users.findOne({ email: email });
+  if (userAvailable) {
+    res.status(400).json({ error: "This user already exist in our databse" });
+  } else {
+    //Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Hashed Password: ", hashedPassword);
+    const dateCreate = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
+
+    const userData = new users({
+      firstname,
+      email,
+      password: hashedPassword,
+      mobile,
+      gender,
+      status,
+      datecreated: dateCreate,
+    });
+    const user = await userData.save();
+
+    console.log(`User created ${user}`);
+    if (user) {
+      res.status(201).json({ _id: user.id, email: user.email });
+    } else {
+      res.status(400).json({ error: "User data is not valid" });
+    }
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400).json({ error: "All fields are mandatory!" });
+  }
+  const foundUser = await users.findOne({ email });
+  //compare password with hashedpassword
+  if (foundUser && (await bcrypt.compare(password, foundUser.password))) {
+    const accessToken = jwt.sign(
+      {
+        user: {
+          username: foundUser.username,
+          email: foundUser.email,
+          id: foundUser.id,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECERT,
+      { expiresIn: "15m" }
+    );
+    res.status(200).json({ accessToken });
+  } else {
+    res.status(401).json({ error: "email or password is not valid" });
+  }
+};
 
 // create user
 exports.userpost = async (req, res) => {

@@ -19,10 +19,14 @@ const usersSchema = new mongoose.Schema({
       }
     },
   },
+  password: {
+    type: String,
+    required: [true, "Please add the user password"],
+  },
   mobile: {
     type: String,
     required: true,
-    unique: true,
+    //unique: true,
     minlength: 11,
     maxlength: 11,
   },
