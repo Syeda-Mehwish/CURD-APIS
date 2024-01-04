@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(router);
 
-const port = 3000;
+const port = 3001;
 
 app.get("/", (req, res) => {
   res.send("Hello World! Mehwish");
