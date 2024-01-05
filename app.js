@@ -15,13 +15,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(router);
 
-const port = 3001;
+const port = 3000;
 
 app.get("/", (req, res) => {
   res.send("Hello World! Mehwish");
 });
 
 // server start
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

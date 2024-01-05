@@ -4,7 +4,16 @@ const moment = require("moment");
 // create Product
 exports.productpost = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const { name, quantity, price, image, timestamps } = req.body;
+
+    const product = await Product.create({
+      name,
+      quantity,
+      price,
+      image,
+      timestamps,
+      user_id: req.user.id,
+    });
     res.status(200).json(product);
   } catch (error) {
     console.log(error.message);

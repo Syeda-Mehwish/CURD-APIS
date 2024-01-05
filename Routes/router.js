@@ -21,9 +21,9 @@ router.put("/users/:id", UserControllers.updateUser);
 //get all products
 router.get("/products", validateToken, productControllers.getProducts);
 // get a product
-router.get("/products/:id", productControllers.getSingleProduct);
+router.get("/products/:id", validateToken, productControllers.getSingleProduct);
 // add a product
-router.post("/products", productControllers.productpost);
+router.post("/products", validateToken, productControllers.productpost);
 // update a product
 router.put("/products/:id", productControllers.updateProduct);
 // delete a product
