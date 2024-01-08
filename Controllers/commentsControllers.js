@@ -17,6 +17,7 @@ exports.commentpost = async (req, res) => {
     const newComment = new comments({
       userId,
       comment,
+      user_id: req.user.id,
     });
 
     // Save the comment to the database
@@ -33,5 +34,14 @@ exports.commentpost = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.commentget = async (req, res) => {
+  try {
+    const comment = await comments.find({ user_id: req.user.id });
+    res.status(200).json(comment);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

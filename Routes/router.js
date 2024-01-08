@@ -30,6 +30,7 @@ router.put("/products/:id", productControllers.updateProduct);
 router.delete("/products/:id", productControllers.deleteProduct);
 
 //user comments
-router.post("/user/comments", commentControllers.commentpost);
+router.post("/user/comments", validateToken, commentControllers.commentpost);
+router.get("/user/comments", validateToken, commentControllers.commentget);
 
 module.exports = router;
