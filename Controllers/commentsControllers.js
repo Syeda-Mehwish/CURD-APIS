@@ -45,3 +45,14 @@ exports.commentget = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.singleCommentGet = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const comment = await comments.find({ _id: id, user_id: req.user.id });
+    res.status(200).json(comment);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
